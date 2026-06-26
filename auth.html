@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sikhya — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#2563EB;--green:#16A34A;--tx:#0F172A;--tx2:#64748B;--bdr:#E2E8F0;--bl:#DBEAFE;--gl:#DCFCE7;--grad:linear-gradient(135deg,#2563EB 0%,#16A34A 100%);--surf:#fff;--bg:#F8FAFC}
+body{font-family:'Sora',sans-serif;-webkit-font-smoothing:antialiased;background:var(--tx);min-height:100vh}
+.shell{display:flex;min-height:100vh}
+
+/* LEFT PANEL */
+.left{width:45%;background:var(--tx);display:flex;flex-direction:column;padding:48px;position:relative;overflow:hidden}
+.left-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.15) 0%,transparent 70%);left:-100px;bottom:-100px;pointer-events:none}
+.left-logo{display:flex;align-items:center;gap:9px;margin-bottom:64px}
+.left-lm{width:32px;height:32px;background:var(--grad);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px}
+.left-ln{font-weight:700;font-size:17px;color:#fff;letter-spacing:-.3px}
+.left-body{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative}
+.left-h{font-size:clamp(28px,3vw,42px);font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.03em;margin-bottom:20px}
+.grt{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.left-sub{font-size:16px;color:rgba(255,255,255,.55);line-height:1.7;max-width:340px;margin-bottom:40px}
+.left-benefits{display:flex;flex-direction:column;gap:14px;margin-bottom:48px}
+.lb{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:rgba(255,255,255,.75)}
+.lb-check{width:20px;height:20px;background:rgba(22,163,74,.2);border:1px solid rgba(22,163,74,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--green);font-size:11px;font-weight:700;margin-top:1px}
+.left-stats{display:flex;gap:32px;padding-top:32px;border-top:1px solid rgba(255,255,255,.08)}
+.lst-n{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:2px}
+.lst-l{font-size:12px;color:rgba(255,255,255,.45);font-weight:500}
+
+/* RIGHT PANEL */
+.right{flex:1;background:var(--surf);display:flex;flex-direction:column;overflow-y:auto}
+.right-top{padding:24px 40px;border-bottom:1px solid var(--bdr);display:flex;justify-content:flex-end}
+.back-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--tx2);font-size:13px;font-weight:500;transition:color .2s}
+.back-link:hover{color:var(--tx)}
+.right-body{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 40px}
+.form-wrap{width:100%;max-width:400px}
+.form-title{font-size:26px;font-weight:800;letter-spacing:-.025em;margin-bottom:6px}
+.form-sub{font-size:14px;color:var(--tx2);margin-bottom:32px}
+
+/* TABS */
+.tabs{display:flex;background:var(--bg);border:1px solid var(--bdr);border-radius:10px;padding:4px;margin-bottom:28px;gap:4px}
+.tab{flex:1;padding:8px 12px;border-radius:7px;font-family:'Sora',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .2s;color:var(--tx2);background:none}
+.tab.active{background:var(--surf);color:var(--tx);box-shadow:0 1px 4px rgba(15,23,42,.08)}
+
+/* FORM */
+.panel{display:block}
+.panel.hide{display:none}
+.field{margin-bottom:18px}
+.field-label{display:block;font-size:13px;font-weight:600;color:var(--tx);margin-bottom:6px}
+.field-input{width:100%;padding:11px 14px;border:1.5px solid var(--bdr);border-radius:10px;font-family:'Sora',sans-serif;font-size:14px;color:var(--tx);outline:none;transition:border-color .2s,box-shadow .2s;background:var(--surf)}
+.field-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.field-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.forgot{font-size:12px;color:var(--blue);text-decoration:none;font-weight:500}
+.forgot:hover{text-decoration:underline}
+.btn-submit{width:100%;padding:13px 24px;background:var(--grad);color:#fff;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-bottom:24px;box-shadow:0 4px 16px rgba(37,99,235,.25)}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(37,99,235,.35)}
+.btn-submit:active{transform:scale(.98)}
+.divider{display:flex;align-items:center;gap:12px;margin-bottom:20px;color:var(--tx2);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.btn-social{width:100%;padding:11px 16px;border:1.5px solid var(--bdr);border-radius:10px;font-family:'Sora',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:border-color .2s,background .2s;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--surf);color:var(--tx);margin-bottom:10px}
+.btn-social:hover{border-color:#94a3b8;background:var(--bg)}
+.g-icon{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#4285F4,#EA4335,#FBBC05,#34A853);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.btn-guest{width:100%;padding:11px 16px;border:none;border-radius:10px;font-family:'Sora',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:var(--tx2);background:none;text-decoration:none;display:block;text-align:center;transition:color .2s}
+.btn-guest:hover{color:var(--tx)}
+
+/* ONBOARDING */
+.ob-wrap{display:none}
+.ob-wrap.show{display:block}
+.ob-progress{display:flex;gap:6px;margin-bottom:32px}
+.ob-dot{height:4px;flex:1;border-radius:2px;background:var(--bdr);transition:background .4s}
+.ob-dot.done{background:var(--grad)}
+.ob-step{display:none}
+.ob-step.show{display:block}
+.ob-h{font-size:22px;font-weight:800;letter-spacing:-.025em;margin-bottom:6px}
+.ob-sub{font-size:14px;color:var(--tx2);margin-bottom:28px}
+.chips-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.chip-sel{padding:9px 18px;border:1.5px solid var(--bdr);border-radius:var(--rf,999px);font-family:'Sora',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;background:none;color:var(--tx)}
+.chip-sel:hover{border-color:#94a3b8;background:var(--bg)}
+.chip-sel.on{background:var(--bl);border-color:var(--blue);color:var(--blue);font-weight:600}
+.chip-sel.on-green{background:var(--gl);border-color:var(--green);color:var(--green);font-weight:600}
+.ob-nav{display:flex;gap:10px}
+.btn-back{padding:13px 20px;border:1.5px solid var(--bdr);border-radius:10px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;cursor:pointer;background:none;color:var(--tx2);transition:all .2s}
+.btn-back:hover{border-color:#94a3b8;color:var(--tx)}
+.btn-next{flex:1;padding:13px 20px;background:var(--grad);color:#fff;font-family:'Sora',sans-serif;font-size:14px;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(37,99,235,.2)}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(37,99,235,.3)}
+:root{--rf:999px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .shell{flex-direction:column}
+  .left{width:100%;padding:32px 24px 40px}
+  .left-stats{gap:24px}
+  .left-benefits{display:none}
+  .right-top{padding:16px 24px}
+  .right-body{padding:32px 24px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <!-- LEFT BRAND PANEL -->
+  <div class="left">
+    <div class="left-glow"></div>
+    <div class="left-logo">
+      <div class="left-lm">S</div>
+      <span class="left-ln">Sikhya</span>
+    </div>
+    <div class="left-body">
+      <h1 class="left-h">Learning<br><span class="grt">without limits.</span></h1>
+      <p class="left-sub">Join students across Punjab who are learning smarter with their own free AI teacher.</p>
+      <div class="left-benefits">
+        <div class="lb"><div class="lb-check">✓</div><span>AI explanations in English, Hindi, and Punjabi</span></div>
+        <div class="lb"><div class="lb-check">✓</div><span>Mapped to your exact PSEB syllabus</span></div>
+        <div class="lb"><div class="lb-check">✓</div><span>Practice tests, progress tracking, and resources</span></div>
+        <div class="lb"><div class="lb-check">✓</div><span>Completely free — no subscriptions, no paywalls</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM PANEL -->
+  <div class="right">
+    <div class="right-top">
+      <a class="back-link" href="index.html">← Back to home</a>
+    </div>
+    <div class="right-body">
+      <div class="form-wrap">
+
+        <!-- AUTH FORMS -->
+        <div id="auth-section">
+          <div class="form-title" id="form-title">Welcome back 👋</div>
+          <div class="form-sub" id="form-sub">Sign in to continue your learning journey.</div>
+
+          <div class="tabs">
+            <button class="tab active" id="tab-in" onclick="switchTab('in')">Sign In</button>
+            <button class="tab" id="tab-up" onclick="switchTab('up')">Create Account</button>
+          </div>
+
+          <!-- SIGN IN -->
+          <div class="panel" id="panel-in">
+            <div class="field">
+              <label class="field-label">Email address</label>
+              <input class="field-input" type="email" placeholder="you@example.com">
+            </div>
+            <div class="field">
+              <div class="field-row">
+                <label class="field-label">Password</label>
+                <a class="forgot" href="#">Forgot password?</a>
+              </div>
+              <input class="field-input" type="password" placeholder="Enter your password">
+            </div>
+            <button class="btn-submit" onclick="goToApp()">Sign In →</button>
+            <a class="btn-guest" href="app.html">Continue as Guest →</a>
+          </div>
+
+          <!-- SIGN UP -->
+          <div class="panel hide" id="panel-up">
+            <div class="field">
+              <label class="field-label">Full name</label>
+              <input class="field-input" type="text" placeholder="Arjun Kumar">
+            </div>
+            <div class="field">
+              <label class="field-label">Email address</label>
+              <input class="field-input" type="email" placeholder="you@example.com">
+            </div>
+            <div class="field">
+              <label class="field-label">Password</label>
+              <input class="field-input" type="password" placeholder="Create a strong password">
+            </div>
+            <button class="btn-submit" onclick="startOnboarding()">Create Account →</button>
+          </div>
+        </div>
+
+        <!-- ONBOARDING -->
+        <div class="ob-wrap" id="ob-wrap">
+          <div class="ob-progress">
+            <div class="ob-dot done" id="dot1"></div>
+            <div class="ob-dot" id="dot2"></div>
+            <div class="ob-dot" id="dot3"></div>
+          </div>
+
+          <!-- Step 1: Class -->
+          <div class="ob-step show" id="ob1">
+            <div class="ob-h">Which class are you in?</div>
+            <div class="ob-sub">We'll tailor your syllabus and content to your class.</div>
+            <div class="chips-grid" id="class-chips">
+              <button class="chip-sel" onclick="selectChip(this,'class-chips')">Class 6</button>
+              <button class="chip-sel" onclick="selectChip(this,'class-chips')">Class 7</button>
+              <button class="chip-sel" onclick="selectChip(this,'class-chips')">Class 8</button>
+              <button class="chip-sel" onclick="selectChip(this,'class-chips')">Class 9</button>
+              <button class="chip-sel on" onclick="selectChip(this,'class-chips')">Class 10</button>
+              <button class="chip-sel" onclick="selectChip(this,'class-chips')">Class 11</button>
+              <button class="chip-sel" onclick="selectChip(this,'class-chips')">Class 12</button>
+            </div>
+            <div class="ob-nav">
+              <button class="btn-next" onclick="goStep(2)">Continue →</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Board -->
+          <div class="ob-step" id="ob2">
+            <div class="ob-h">Which board?</div>
+            <div class="ob-sub">We'll align your content with your board's curriculum.</div>
+            <div class="chips-grid" id="board-chips">
+              <button class="chip-sel on" onclick="selectChip(this,'board-chips')">PSEB</button>
+              <button class="chip-sel" onclick="selectChip(this,'board-chips')">CBSE</button>
+              <button class="chip-sel" onclick="selectChip(this,'board-chips')">ICSE</button>
+              <button class="chip-sel" onclick="selectChip(this,'board-chips')">Other</button>
+            </div>
+            <div class="ob-nav">
+              <button class="btn-back" onclick="goStep(1)">← Back</button>
+              <button class="btn-next" onclick="goStep(3)">Continue →</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Goal -->
+          <div class="ob-step" id="ob3">
+            <div class="ob-h">What's your main goal?</div>
+            <div class="ob-sub">This helps us suggest the right activities for you.</div>
+            <div class="chips-grid" id="goal-chips">
+              <button class="chip-sel on-green on" onclick="selectChip(this,'goal-chips','green')">Exam Preparation</button>
+              <button class="chip-sel" onclick="selectChip(this,'goal-chips','green')">Understand Better</button>
+              <button class="chip-sel" onclick="selectChip(this,'goal-chips','green')">Practice More</button>
+              <button class="chip-sel" onclick="selectChip(this,'goal-chips','green')">All of the Above</button>
+            </div>
+            <div class="ob-nav">
+              <button class="btn-back" onclick="goStep(2)">← Back</button>
+              <button class="btn-next" onclick="goToApp()">Start Learning! 🚀</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(t) {
+  document.getElementById('tab-in').classList.toggle('active', t === 'in');
+  document.getElementById('tab-up').classList.toggle('active', t === 'up');
+  document.getElementById('panel-in').classList.toggle('hide', t !== 'in');
+  document.getElementById('panel-up').classList.toggle('hide', t !== 'up');
+  document.getElementById('form-title').textContent = t === 'in' ? 'Welcome back 👋' : 'Start learning today';
+  document.getElementById('form-sub').textContent = t === 'in'
+    ? 'Sign in to continue your learning journey.'
+    : 'Create your free account in 30 seconds.';
+}
+
+function selectChip(el, groupId, colorClass) {
+  const group = document.getElementById(groupId);
+  group.querySelectorAll('.chip-sel').forEach(c => {
+    c.classList.remove('on');
+    if (colorClass === 'green') c.classList.remove('on-green');
+  });
+  el.classList.add('on');
+  if (colorClass === 'green') el.classList.add('on-green');
+}
+
+function startOnboarding() {
+  document.getElementById('auth-section').style.display = 'none';
+  document.getElementById('ob-wrap').classList.add('show');
+}
+
+function goStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('ob'+i).classList.toggle('show', i === n);
+    const dot = document.getElementById('dot'+i);
+    dot.classList.toggle('done', i <= n);
+  });
+}
+
+function goToApp() {
+  window.location.href = 'app.html';
+}
+</script>
+</body>
+</html>

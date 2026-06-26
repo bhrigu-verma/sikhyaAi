@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sikhya — Learn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#2563EB;--green:#16A34A;--bg:#F8FAFC;--surf:#fff;--bdr:#E2E8F0;--tx:#0F172A;--tx2:#64748B;--bl:#DBEAFE;--gl:#DCFCE7;--grad:linear-gradient(135deg,#2563EB 0%,#16A34A 100%)}
+html,body,#root{height:100%;margin:0}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;overflow:hidden}
+#root{height:100vh}
+.app-shell{display:flex;height:100vh;overflow:hidden}
+.app-sidebar{flex-shrink:0}
+.app-main{flex:1;display:flex;flex-direction:column;overflow:hidden;margin-left:240px;transition:margin-left .3s}
+.app-topbar{flex-shrink:0}
+.app-content{flex:1;overflow-y:auto;overflow-x:hidden}
+
+/* Sidebar mobile overlay */
+@media(max-width:768px){
+  .app-main{margin-left:0 !important}
+  .app-sidebar aside{transform:translateX(-100%);transition:transform .3s}
+  .app-sidebar aside.open{transform:translateX(0)}
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar{width:5px;height:5px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background:#E2E8F0;border-radius:4px}
+*::-webkit-scrollbar-thumb:hover{background:#CBD5E1}
+
+/* Bottom mobile nav */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E2E8F0;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:60;justify-content:space-around}
+@media(max-width:768px){
+  .mob-nav{display:flex}
+  .app-content{padding-bottom:72px}
+}
+.mob-nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 12px;background:none;border:none;cursor:pointer;color:#94A3B8;font-family:'Sora',sans-serif;font-size:10px;font-weight:500;transition:color .2s;border-radius:8px}
+.mob-nav-btn.active{color:#2563EB}
+.mob-nav-btn svg{flex-shrink:0}
+
+/* Page transition */
+.page-fade{animation:pfade .25s ease}
+@keyframes pfade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Tweaks */
+.tw-panel{display:none;position:fixed;bottom:20px;right:20px;width:240px;background:#fff;border:1px solid #E2E8F0;border-radius:16px;box-shadow:0 24px 64px rgba(15,23,42,.14);z-index:9999}
+.tw-hd{padding:14px 16px;border-bottom:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center}
+.tw-hd h4{font-size:14px;font-weight:700;color:#0F172A}
+.tw-x{background:none;border:none;font-size:20px;cursor:pointer;color:#94A3B8;line-height:1}
+.tw-body{padding:16px;display:flex;flex-direction:column;gap:14px}
+.tw-lbl{font-size:11px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.tw-swatches{display:flex;gap:8px}
+.tw-sw{width:26px;height:26px;border-radius:7px;cursor:pointer;border:2.5px solid transparent;transition:transform .2s,border-color .2s}
+.tw-sw:hover,.tw-sw.on{transform:scale(1.18);border-color:#0F172A}
+.tw-pills{display:flex;gap:6px}
+.tw-pill{padding:5px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid #E2E8F0;background:none;cursor:pointer;font-family:'Sora',sans-serif;color:#64748B;transition:all .2s}
+.tw-pill.on{background:#2563EB;border-color:#2563EB;color:#fff}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="components/shared.jsx"></script>
+<script type="text/babel" src="components/dashboard.jsx"></script>
+<script type="text/babel" src="components/tutor.jsx"></script>
+<script type="text/babel" src="components/learn.jsx"></script>
+<script type="text/babel" src="components/practice.jsx"></script>
+<script type="text/babel" src="components/tests.jsx"></script>
+<script type="text/babel" src="components/progress.jsx"></script>
+<script type="text/babel" src="components/resources.jsx"></script>
+<script type="text/babel" src="components/profile.jsx"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const MOB_NAV = [
+  { id:'dashboard', icon:'home',      label:'Home'     },
+  { id:'tutor',     icon:'chat',      label:'AI Tutor' },
+  { id:'learn',     icon:'book',      label:'Learn'    },
+  { id:'practice',  icon:'pencil',    label:'Practice' },
+  { id:'progress',  icon:'chart',     label:'Progress' },
+];
+
+const PAGE_MAP = {
+  dashboard: 'Dashboard',
+  tutor:     'Tutor',
+  learn:     'Learn',
+  practice:  'Practice',
+  tests:     'Tests',
+  progress:  'ProgressPage',
+  resources: 'Resources',
+  profile:   'Profile',
+};
+
+function App() {
+  const [page, setPage]           = useState(() => (window.location.hash.slice(1) || 'dashboard'));
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [tweaks, setTweaks]       = useState({ theme:'default', sidebar:'light' });
+
+  const navigate = (p) => {
+    setPage(p);
+    window.location.hash = p;
+    setSidebarOpen(false);
+  };
+
+  useEffect(() => {
+    const onHash = () => { const p = window.location.hash.slice(1); if(p && PAGE_MAP[p]) setPage(p); };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  // Tweaks protocol
+  useEffect(() => {
+    window.addEventListener('message', (e) => {
+      if (e.data.type === '__activate_edit_mode')   document.querySelector('.tw-panel').style.display = 'block';
+      if (e.data.type === '__deactivate_edit_mode') document.querySelector('.tw-panel').style.display = 'none';
+    });
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  }, []);
+
+  const compName = PAGE_MAP[page] || 'Dashboard';
+  const PageComp = window[compName];
+
+  if (!PageComp) return (
+    <div style={{ display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',fontFamily:"'Sora',sans-serif",color:'#64748B' }}>
+      Loading...
+    </div>
+  );
+
+  return (
+    <div className="app-shell">
+      <div className="app-sidebar">
+        <Sidebar page={page} navigate={navigate} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      </div>
+
+      <div className="app-main">
+        <div className="app-topbar">
+          <TopBar page={page} navigate={navigate} onMenu={() => setSidebarOpen(o => !o)} />
+        </div>
+        <div className="app-content">
+          <div className="page-fade" key={page}>
+            <PageComp navigate={navigate} />
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile bottom nav */}
+      <nav className="mob-nav">
+        {MOB_NAV.map(n => (
+          <button key={n.id} className={`mob-nav-btn${page===n.id?' active':''}`} onClick={() => navigate(n.id)}>
+            <Icon name={n.icon} size={20} stroke={page===n.id?2:1.5} />
+            {n.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Tweaks panel */}
+      <div className="tw-panel" id="tw-panel">
+        <div className="tw-hd">
+          <h4>Tweaks</h4>
+          <button className="tw-x" onClick={() => {
+            document.querySelector('.tw-panel').style.display='none';
+            window.parent.postMessage({type:'__edit_mode_dismissed'},'*');
+          }}>×</button>
+        </div>
+        <div className="tw-body">
+          <div>
+            <div className="tw-lbl">Color Theme</div>
+            <div className="tw-swatches">
+              {[
+                {name:'default',bg:'linear-gradient(135deg,#2563EB,#16A34A)'},
+                {name:'violet', bg:'linear-gradient(135deg,#7C3AED,#2563EB)'},
+                {name:'teal',   bg:'linear-gradient(135deg,#0891B2,#059669)'},
+                {name:'amber',  bg:'linear-gradient(135deg,#D97706,#B45309)'},
+              ].map(t => (
+                <div key={t.name} className={`tw-sw${tweaks.theme===t.name?' on':''}`}
+                  style={{background:t.bg}}
+                  onClick={() => {
+                    const themes = {
+                      default:['#2563EB','#16A34A'],
+                      violet: ['#7C3AED','#2563EB'],
+                      teal:   ['#0891B2','#059669'],
+                      amber:  ['#D97706','#B45309'],
+                    };
+                    const [b,g] = themes[t.name];
+                    document.documentElement.style.setProperty('--blue',b);
+                    document.documentElement.style.setProperty('--green',g);
+                    document.documentElement.style.setProperty('--grad',`linear-gradient(135deg,${b},${g})`);
+                    setTweaks(tw=>({...tw,theme:t.name}));
+                    window.parent.postMessage({type:'__edit_mode_set_keys',edits:{theme:t.name}},'*');
+                  }}></div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="tw-lbl">Density</div>
+            <div className="tw-pills">
+              {['Compact','Default','Spacious'].map(d => (
+                <button key={d} className={`tw-pill${tweaks.density===d?' on':''}`}
+                  onClick={()=>{setTweaks(tw=>({...tw,density:d}));window.parent.postMessage({type:'__edit_mode_set_keys',edits:{density:d}},'*');}}>
+                  {d}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="tw-lbl">Page</div>
+            <div style={{display:'flex',flexDirection:'column',gap:4}}>
+              {Object.keys(PAGE_MAP).map(p => (
+                <button key={p} style={{padding:'7px 12px',borderRadius:8,fontFamily:"'Sora',sans-serif",fontSize:12,fontWeight:500,border:'1.5px solid',borderColor:page===p?'#2563EB':'#E2E8F0',background:page===p?'#EFF6FF':'#F8FAFC',color:page===p?'#2563EB':'#64748B',cursor:'pointer',textAlign:'left',transition:'all .2s'}}
+                  onClick={()=>navigate(p)}>
+                  {p.charAt(0).toUpperCase()+p.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

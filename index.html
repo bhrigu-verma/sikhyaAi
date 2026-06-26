@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="pa">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sikhya · ਸਿੱਖਿਆ — Learning Without Limits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Gurmukhi:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563EB;--green:#16A34A;--bg:#F8FAFC;--surf:#fff;
+  --bdr:#E2E8F0;--tx:#0F172A;--tx2:#64748B;--tx3:#94A3B8;
+  --bl:#DBEAFE;--gl:#DCFCE7;
+  --grad:linear-gradient(90deg,#2563EB,#16A34A);
+  --sh1:0 1px 3px rgba(15,23,42,.06);--sh2:0 4px 16px rgba(15,23,42,.08);
+  --sh3:0 12px 40px rgba(15,23,42,.10);--sh4:0 24px 64px rgba(15,23,42,.13);
+  --r1:6px;--r2:10px;--r3:14px;--r4:18px;--r5:24px;--rf:999px;
+  --gu:'Noto Sans Gurmukhi',sans-serif;
+  --head:'Sora',sans-serif;--body:'Inter',sans-serif
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;line-height:1.6}
+.gu{font-family:var(--gu)}
+h1,h2,h3,.head{font-family:var(--head)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:62px;padding:0 clamp(16px,5%,64px);display:flex;align-items:center;transition:background .3s,box-shadow .3s}
+nav.glass{background:rgba(248,250,252,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--bdr)}
+.ni{display:flex;align-items:center;width:100%;max-width:1200px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--tx)}
+.lm{width:30px;height:30px;background:var(--grad);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;font-family:var(--head);flex-shrink:0}
+.ln{font-family:var(--head);font-weight:700;font-size:16px;letter-spacing:-.2px}
+.ln-pa{font-family:var(--gu);font-size:9px;color:var(--blue);font-weight:700;margin-top:1px}
+.nlinks{display:flex;gap:24px;list-style:none;margin:0 auto}
+.nlinks a{text-decoration:none;color:var(--tx2);font-size:13.5px;font-weight:500;font-family:var(--body);transition:color .2s}
+.nlinks a:hover{color:var(--tx)}
+.nr{display:flex;align-items:center;gap:8px}
+.nbtn{padding:7px 16px;font-family:var(--body);font-size:13px;font-weight:500;color:var(--tx2);background:none;border:none;cursor:pointer;text-decoration:none;border-radius:var(--r2);transition:color .2s}
+.nbtn:hover{color:var(--tx)}
+a.ncta{padding:8px 18px;font-family:var(--body);font-size:13px;font-weight:600;color:#fff;background:var(--blue);border-radius:var(--r2);text-decoration:none;box-shadow:0 2px 8px rgba(37,99,235,.3);transition:all .2s}
+a.ncta:hover{background:#1D4ED8;transform:translateY(-1px);box-shadow:0 4px 16px rgba(37,99,235,.35)}
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;margin-left:8px}
+.hbg span{width:20px;height:1.5px;background:var(--tx);border-radius:2px;display:block}
+.mob-menu{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(248,250,252,.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:12px clamp(16px,5%,64px);flex-direction:column;gap:2px;z-index:99}
+.mob-menu.open{display:flex}
+.mob-a{padding:11px 14px;border-radius:var(--r2);color:var(--tx2);text-decoration:none;font-size:15px;font-weight:500}
+.mob-cta{margin-top:6px;padding:12px 20px;background:var(--blue);color:#fff;font-size:15px;font-weight:600;border:none;border-radius:var(--r3);cursor:pointer;text-align:center;text-decoration:none;display:block;font-family:var(--body)}
+
+/* HERO */
+.hero{min-height:100vh;padding:88px clamp(16px,5%,64px) 64px;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(37,99,235,.018) 27px,rgba(37,99,235,.018) 28px);pointer-events:none}
+.hero-g1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.09) 0%,transparent 70%);left:-100px;top:50%;transform:translateY(-50%);animation:gm 16s ease-in-out infinite alternate;pointer-events:none}
+.hero-g2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(22,163,74,.07) 0%,transparent 70%);right:10%;top:20%;animation:gm 20s ease-in-out infinite alternate-reverse;pointer-events:none}
+@keyframes gm{from{transform:translateY(-50%) translate(0,0)}to{transform:translateY(-50%) translate(20px,15px)}}
+.hero-in{display:grid;grid-template-columns:44% 56%;gap:56px;align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.hero-txt{animation:fu .8s .1s ease both}
+.hero-vis{animation:fu .8s .3s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.h-greet{font-family:var(--gu);font-size:17px;font-weight:700;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+h1.hero-h{font-size:clamp(36px,4.8vw,60px);font-weight:800;line-height:1.08;letter-spacing:-.04em;margin-bottom:20px;color:var(--tx)}
+.hero-h .gr{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15.5px;color:var(--tx2);line-height:1.8;margin-bottom:32px;max-width:440px}
+.hero-sub strong{color:var(--tx);font-weight:600}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.btn-p{display:inline-flex;align-items:center;gap:6px;padding:12px 24px;background:var(--blue);color:#fff;font-family:var(--body);font-size:14.5px;font-weight:600;border:none;border-radius:var(--r3);cursor:pointer;text-decoration:none;box-shadow:0 4px 16px rgba(37,99,235,.28);transition:all .22s}
+.btn-p:hover{background:#1D4ED8;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,99,235,.35)}
+.btn-p:active{transform:scale(.97)}
+.btn-o{display:inline-flex;align-items:center;gap:6px;padding:12px 22px;background:var(--surf);color:var(--tx);font-family:var(--body);font-size:14.5px;font-weight:500;border:1.5px solid var(--bdr);border-radius:var(--r3);cursor:pointer;text-decoration:none;transition:all .22s}
+.btn-o:hover{border-color:#94A3B8;transform:translateY(-1px);box-shadow:var(--sh1)}
+.hero-tags{display:flex;gap:6px;flex-wrap:wrap}
+.htag{padding:4px 11px;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--rf);font-size:11.5px;font-weight:500;color:var(--tx2);font-family:var(--body)}
+
+/* STUDY DESK */
+.desk-wrap{position:relative;height:500px;width:100%}
+.dc{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r4);padding:16px;box-shadow:var(--sh3);position:absolute;transition:box-shadow .3s}
+.dc:hover{box-shadow:var(--sh4)}
+.dc-lbl{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;font-family:var(--body)}
+.dc-title{font-size:14px;font-weight:700;color:var(--tx);font-family:var(--head);margin-bottom:4px}
+.dc-sub{font-size:11.5px;color:var(--tx2);font-family:var(--body)}
+.dc-main{width:288px;top:60px;left:140px;z-index:3;padding:0;animation:fl 9s ease-in-out infinite .5s}
+.dc-chapter{width:164px;top:0;left:0;transform:rotate(-1.8deg);animation:fl2 7s ease-in-out infinite}
+.dc-streak{width:130px;bottom:20px;left:8px;transform:rotate(1.2deg);animation:fl3 6.5s ease-in-out infinite 1s}
+.dc-progress{width:148px;bottom:0;left:152px;animation:fl 8.5s ease-in-out infinite 1.5s}
+.dc-paper{width:160px;top:10px;right:0;transform:rotate(2deg);animation:fl2 7.5s ease-in-out infinite 2s}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes fl2{0%,100%{transform:rotate(-1.8deg) translateY(0)}50%{transform:rotate(-1.8deg) translateY(-9px)}}
+@keyframes fl3{0%,100%{transform:rotate(1.2deg) translateY(0)}50%{transform:rotate(1.2deg) translateY(-8px)}}
+
+/* Main card internals */
+.dc-main-bar{padding:10px 14px;border-bottom:1px solid var(--bdr);background:#FAFBFD;border-radius:var(--r4) var(--r4) 0 0;display:flex;align-items:center;justify-content:space-between}
+.dc-subject{font-size:11px;font-weight:700;color:var(--blue);font-family:var(--gu)}
+.dc-board{font-size:10px;font-weight:600;padding:2px 7px;background:var(--gl);color:var(--green);border-radius:var(--rf);font-family:var(--body)}
+.dc-modes{display:flex;gap:3px;padding:7px 12px;border-bottom:1px solid var(--bdr)}
+.dc-mode{padding:3px 9px;border-radius:5px;font-size:10px;font-weight:600;color:var(--tx3);border:1px solid transparent;font-family:var(--body)}
+.dc-mode.on{background:var(--bl);color:var(--blue);border-color:rgba(37,99,235,.2)}
+.dc-body{padding:12px}
+.dc-q-wrap{margin-bottom:8px}
+.dc-q-meta{font-size:9.5px;color:var(--tx3);margin-bottom:4px;font-family:var(--body)}
+.dc-q-bub{background:var(--blue);color:#fff;padding:9px 12px;border-radius:11px 11px 3px 11px;font-size:12px;line-height:1.55;font-family:var(--gu)}
+.dc-a-row{display:flex;gap:6px;align-items:flex-start}
+.dc-a-ic{width:18px;height:18px;background:var(--grad);border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;flex-shrink:0;margin-top:2px;font-family:var(--head)}
+.dc-a-bub{background:var(--bg);border:1px solid var(--bdr);padding:9px 11px;border-radius:3px 11px 11px 11px;font-size:11.5px;color:var(--tx);line-height:1.65;font-family:var(--gu);min-height:40px}
+.dc-src{display:flex;align-items:center;gap:4px;margin-top:7px;padding:5px 8px;background:var(--yl,#FFFBEB);border:1px solid rgba(180,83,9,.12);border-radius:6px;font-size:10px;color:#92400E;font-family:var(--body)}
+.dc-chips-row{display:flex;gap:4px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid var(--bdr);opacity:0;transition:opacity .6s}
+.dc-chips-row.show{opacity:1}
+.dc-chip{padding:2px 8px;border-radius:var(--rf);font-size:10px;font-weight:500;font-family:var(--gu)}
+.dc-chip.blue{background:var(--bl);color:var(--blue)}
+.dc-chip.green{background:var(--gl);color:var(--green)}
+.dc-chip.gold{background:#FEF9C3;color:#B45309}
+
+/* Small cards */
+.dc-ch-icon{font-size:22px;margin-bottom:8px}
+.dc-prog-n{font-size:22px;font-weight:800;color:var(--blue);letter-spacing:-.03em;font-family:var(--head);margin-bottom:2px}
+.dc-prog-bar{height:4px;background:var(--bdr);border-radius:2px;overflow:hidden;margin-top:8px}
+.dc-prog-fill{height:100%;border-radius:2px;background:var(--grad);transition:width 1.2s ease}
+.dc-streak-n{font-size:24px;font-weight:800;color:var(--tx);font-family:var(--head);margin-bottom:2px}
+.dc-paper-icon{width:32px;height:40px;border:2px solid var(--bdr);border-radius:3px;background:var(--bg);margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.dc-paper-year{font-size:13px;font-weight:700;color:var(--tx);font-family:var(--head);margin-bottom:2px}
+
+/* Cursor blink */
+.cr{display:inline-block;width:1.5px;height:11px;background:var(--blue);margin-left:1px;vertical-align:text-bottom;animation:blink .7s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* SECTION BASE */
+.sec{padding:96px clamp(16px,5%,64px)}
+.sw{max-width:1120px;margin:0 auto}
+.ey{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:var(--body)}
+.st{font-size:clamp(26px,3.5vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.14;margin-bottom:12px;font-family:var(--head);color:var(--tx)}
+.ss{font-size:15px;color:var(--tx2);max-width:500px;line-height:1.75;font-family:var(--body)}
+
+/* FEATURES */
+.feat-s{background:var(--surf);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr)}
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border:1px solid var(--bdr);border-radius:var(--r4);overflow:hidden}
+.feat-card{padding:28px 22px;border-right:1px solid var(--bdr);transition:background .2s;cursor:default;position:relative;overflow:hidden}
+.feat-card:last-child{border-right:none}
+.feat-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--grad);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.feat-card:hover{background:var(--bg)}.feat-card:hover::before{transform:scaleX(1)}
+.feat-icon{width:40px;height:40px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.feat-h{font-size:14.5px;font-weight:700;margin-bottom:7px;font-family:var(--head);color:var(--tx)}
+.feat-p{font-size:12.5px;color:var(--tx2);line-height:1.65;font-family:var(--body)}
+
+/* DEMO */
+.demo-s{background:var(--tx);padding:96px clamp(16px,5%,64px);position:relative;overflow:hidden}
+.demo-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(37,99,235,.14) 0%,transparent 70%);pointer-events:none}
+.demo-wrap{max-width:680px;margin:0 auto;position:relative}
+.demo-ey{text-align:center;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.14em;margin-bottom:12px;font-family:var(--body)}
+.demo-title{text-align:center;font-size:clamp(22px,3vw,36px);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:40px;font-family:var(--head)}
+.demo-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r5);overflow:hidden}
+.demo-hd{padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:6px}
+.dtr{width:9px;height:9px;border-radius:50%}
+.demo-cht{font-size:12px;color:rgba(255,255,255,.4);margin-left:8px;font-family:var(--body)}
+.demo-tabs{display:flex;gap:4px;padding:6px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.demo-tab{padding:4px 10px;border-radius:5px;font-size:10.5px;font-weight:600;color:rgba(255,255,255,.4);border:1px solid transparent;cursor:default;font-family:var(--body)}
+.demo-tab.on{background:rgba(37,99,235,.3);color:rgba(255,255,255,.85);border-color:rgba(37,99,235,.4)}
+.demo-msgs{padding:20px 16px;display:flex;flex-direction:column;gap:12px}
+.dm-u{display:flex;justify-content:flex-end}
+.dm-u .b{background:var(--blue);color:#fff;padding:10px 14px;border-radius:14px 14px 4px 14px;font-size:13.5px;max-width:380px;line-height:1.55;font-family:var(--gu)}
+.dm-a{display:flex;gap:8px;align-items:flex-start}
+.dm-a-ic{width:24px;height:24px;background:var(--grad);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;flex-shrink:0;font-family:var(--head)}
+.dm-a .b{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.88);padding:10px 14px;border-radius:4px 14px 14px 14px;font-size:13.5px;max-width:440px;line-height:1.7;font-family:var(--gu)}
+.demo-src{display:flex;gap:6px;padding:10px 16px;border-top:1px solid rgba(255,255,255,.07);flex-wrap:wrap}
+.dsrc{padding:3px 10px;border-radius:var(--rf);font-size:11px;font-weight:500;background:rgba(37,99,235,.2);color:rgba(255,255,255,.7);border:1px solid rgba(37,99,235,.25);font-family:var(--gu)}
+.demo-follow{padding:8px 16px 14px;font-size:12.5px;color:rgba(255,255,255,.4);font-family:var(--gu)}
+.demo-follow strong{color:rgba(255,255,255,.6);font-weight:600}
+/* Subject switcher */
+.demo-subjects{display:flex;gap:8px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.demo-subj{padding:6px 14px;border:1.5px solid rgba(255,255,255,.12);border-radius:var(--rf);font-size:12px;font-weight:500;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;background:none;font-family:var(--body)}
+.demo-subj.on{border-color:rgba(37,99,235,.5);background:rgba(37,99,235,.2);color:rgba(255,255,255,.9)}
+.typing-d{display:none;gap:4px;align-items:center;padding:4px 0}
+.td{width:5px;height:5px;background:rgba(255,255,255,.4);border-radius:50%;animation:db 1.4s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes db{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+
+/* ARCHITECTURE */
+.arch-s{padding:96px clamp(16px,5%,64px);background:var(--bg)}
+.arch-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;margin-top:48px;align-items:start}
+.arch-desc p{font-size:14.5px;color:var(--tx2);line-height:1.8;font-family:var(--body);margin-bottom:16px}
+.arch-desc p strong{color:var(--tx);font-weight:600}
+.arch-badge{display:inline-flex;padding:4px 12px;border-radius:var(--rf);font-size:11px;font-weight:600;background:var(--bl);color:var(--blue);font-family:var(--body);margin-bottom:20px}
+.arch-diagram{position:relative}
+.arch-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.arch-col-label{font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;text-align:center;font-family:var(--body)}
+.arch-pipe{display:flex;flex-direction:column;align-items:center;gap:0}
+.arch-node{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);padding:9px 14px;text-align:center;font-size:12px;font-weight:500;color:var(--tx);font-family:var(--body);transition:all .25s;cursor:default;width:100%;position:relative}
+.arch-node:hover{border-color:var(--blue);background:var(--bl);color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.arch-node.highlight{border-color:var(--blue);color:var(--blue);background:var(--bl)}
+.arch-node.green{border-color:var(--green);color:var(--green);background:var(--gl)}
+.arch-arrow{width:1.5px;height:16px;background:var(--bdr);margin:0 auto;position:relative;overflow:hidden}
+.arch-arrow::after{content:'';position:absolute;top:-100%;width:100%;height:100%;background:var(--grad);animation:flow 2s linear infinite}
+@keyframes flow{from{top:-100%}to{top:200%}}
+.arch-arrow-tip{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--bdr);margin:0 auto}
+.arch-divider{width:80%;height:1px;background:var(--bdr);margin:8px auto;position:relative;overflow:hidden}
+.arch-divider::after{content:'';position:absolute;left:-100%;top:0;height:100%;width:60%;background:linear-gradient(90deg,transparent,rgba(37,99,235,.4),transparent);animation:slide 3s linear infinite}
+@keyframes slide{to{left:160%}}
+
+/* JOURNEY */
+.jou{background:var(--surf);border-top:1px solid var(--bdr);padding:96px clamp(16px,5%,64px)}
+.jou .sw{max-width:1100px;margin:0 auto}
+.jst{display:grid;grid-template-columns:repeat(4,1fr);margin-top:52px;position:relative}
+.jl{position:absolute;top:18px;left:12.5%;right:12.5%;height:1.5px;background:var(--bdr)}
+.jp{position:absolute;top:18px;left:12.5%;height:1.5px;width:0;background:var(--grad);transition:width 1.8s cubic-bezier(.22,1,.36,1)}
+.js{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;position:relative;z-index:2}
+.jn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--bdr);background:var(--surf);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--tx3);margin-bottom:18px;transition:all .45s;font-family:var(--head)}
+.js.act .jn{background:var(--blue);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.jtt{font-size:15px;font-weight:700;margin-bottom:7px;font-family:var(--head);color:var(--tx)}
+.jd{font-size:12.5px;color:var(--tx2);line-height:1.6;font-family:var(--body)}
+
+/* MISSION */
+.mis{padding:112px clamp(16px,5%,64px);text-align:center;position:relative;overflow:hidden}
+.mis::before{content:'ਸਿੱਖਿਆ';position:absolute;font-family:var(--gu);font-size:clamp(100px,16vw,220px);font-weight:800;color:rgba(37,99,235,.04);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;user-select:none;line-height:1}
+.mis-pa{font-family:var(--gu);font-size:clamp(20px,3.5vw,38px);font-weight:800;color:var(--blue);margin-bottom:12px;position:relative}
+.mis-en{font-size:clamp(16px,2.5vw,28px);font-weight:700;color:var(--tx);margin-bottom:18px;letter-spacing:-.025em;font-family:var(--head);position:relative}
+.mis-sub{font-size:15px;color:var(--tx2);max-width:400px;margin:0 auto 36px;line-height:1.8;font-family:var(--body);position:relative}
+.mis-line{width:40px;height:2px;background:var(--grad);border-radius:2px;margin:0 auto;position:relative}
+
+/* CTA */
+.cta-s{padding:72px clamp(16px,5%,64px);background:var(--surf);border-top:1px solid var(--bdr)}
+.ctai{max-width:520px;margin:0 auto;text-align:center}
+.ctat{font-size:clamp(24px,3.5vw,42px);font-weight:800;letter-spacing:-.035em;margin-bottom:14px;font-family:var(--head);color:var(--tx)}
+.ctas{color:var(--tx2);margin-bottom:28px;font-size:15px;line-height:1.7;font-family:var(--body)}
+
+/* FOOTER */
+footer{background:var(--tx);color:rgba(248,250,252,.55);padding:52px clamp(16px,5%,64px) 24px}
+.fw{max-width:1100px;margin:0 auto}
+.ftp{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:40px}
+.fbr{color:rgba(248,250,252,.95);font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px;margin-bottom:10px;font-family:var(--head)}
+.fbr-pa{font-family:var(--gu);font-size:10px;color:rgba(37,99,235,.7);font-weight:600;margin-top:2px;display:block}
+.fab{font-size:12.5px;line-height:1.7;max-width:200px;font-family:var(--body)}
+.fch{color:rgba(248,250,252,.65);font-size:11px;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em;font-family:var(--body)}
+.fl{list-style:none;display:flex;flex-direction:column;gap:8px}
+.fl a{color:rgba(248,250,252,.45);text-decoration:none;font-size:13px;transition:color .2s;font-family:var(--body)}
+.fl a:hover{color:rgba(248,250,252,.9)}
+.fb-row{border-top:1px solid rgba(248,250,252,.06);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-family:var(--body)}
+
+/* TWEAKS */
+.twp{display:none;position:fixed;bottom:20px;right:20px;width:236px;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r4);box-shadow:var(--sh4);z-index:9999}
+.twh{padding:12px 14px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center}
+.twh h4{font-size:13px;font-weight:700;font-family:var(--head);color:var(--tx)}
+.twx{background:none;border:none;font-size:18px;cursor:pointer;color:var(--tx3);line-height:1}
+.twb{padding:14px;display:flex;flex-direction:column;gap:14px}
+.twl{font-size:10.5px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;font-family:var(--body)}
+.tw-sw{display:flex;gap:7px}
+.swatch{width:24px;height:24px;border-radius:6px;cursor:pointer;border:2.5px solid transparent;transition:transform .2s,border-color .2s}
+.swatch:hover,.swatch.on{transform:scale(1.2);border-color:var(--tx)}
+.tw-pg{display:flex;gap:5px}
+.tpg{padding:4px 11px;border-radius:var(--rf);font-size:11.5px;font-weight:600;border:1.5px solid var(--bdr);background:none;cursor:pointer;font-family:var(--body);color:var(--tx2);transition:all .2s}
+.tpg.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.rv.vis{opacity:1;transform:none}
+.rv.d1{transition-delay:.07s}.rv.d2{transition-delay:.14s}.rv.d3{transition-delay:.21s}.rv.d4{transition-delay:.28s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.hero-in{grid-template-columns:1fr}.desk-wrap{height:320px;margin-bottom:0}.dc-main{width:240px;top:40px;left:90px}.dc-chapter{width:130px}.dc-paper{width:130px}.dc-streak{width:110px;bottom:10px}.dc-progress{width:120px;bottom:10px;left:120px}.feat-grid{grid-template-columns:repeat(2,1fr)}.arch-layout{grid-template-columns:1fr}.arch-desc{margin-bottom:0}.ftp{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.nlinks,.hero-vis{display:none}.hbg{display:flex}.sec,.demo-s,.arch-s,.jou,.mis,.cta-s{padding:64px clamp(16px,5%,64px)}.jst{grid-template-columns:1fr 1fr;gap:36px}.jl,.jp{display:none}.feat-grid{grid-template-columns:1fr;border-radius:var(--r3)}.feat-card{border-right:none;border-bottom:1px solid var(--bdr)}.feat-card:last-child{border-bottom:none}.ftp{grid-template-columns:1fr}.fb-row{flex-direction:column;gap:8px;text-align:center}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="ni">
+    <a class="logo" href="#">
+      <div class="lm">S</div>
+      <div><span class="ln">Sikhya</span><span class="ln-pa">ਸਿੱਖਿਆ</span></div>
+    </a>
+    <ul class="nlinks">
+      <li><a href="#feat">ਕਿਉਂ Sikhya</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#arch">How It Works</a></li>
+      <li><a href="#mis">About</a></li>
+    </ul>
+    <div class="nr">
+      <a class="nbtn" href="auth.html">Login</a>
+      <a class="ncta" href="auth.html">ਸ਼ੁਰੂ ਕਰੋ</a>
+      <button class="hbg" id="hbg"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mob-menu" id="mob-menu">
+  <a class="mob-a" href="#feat">ਕਿਉਂ Sikhya</a>
+  <a class="mob-a" href="#demo">Demo</a>
+  <a class="mob-a" href="#arch">How It Works</a>
+  <a class="mob-cta" href="auth.html">ਸ਼ੁਰੂ ਕਰੋ →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-g1"></div><div class="hero-g2"></div>
+  <div class="hero-in">
+    <div class="hero-txt">
+      <div class="h-greet gu">ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ 👋</div>
+      <h1 class="hero-h">Learning<br><span class="gr">without limits.</span></h1>
+      <p class="hero-sub">Every student deserves a teacher who never gets tired.<br><strong>ਪੰਜਾਬੀ, Hindi, or English</strong> — learn your way. Free forever.</p>
+      <div class="hero-btns">
+        <a class="btn-p" href="auth.html">Start Learning</a>
+        <a class="btn-o" href="#demo">Watch Demo</a>
+      </div>
+      <div class="hero-tags">
+        <span class="htag">Class 6–12</span>
+        <span class="htag">PSEB Board</span>
+        <span class="htag gu">ਪੰਜਾਬੀ · हिंदी · English</span>
+        <span class="htag">Free forever</span>
+      </div>
+    </div>
+
+    <div class="hero-vis">
+      <div class="desk-wrap">
+        <!-- Chapter card -->
+        <div class="dc dc-chapter">
+          <div class="dc-lbl">Today's Chapter</div>
+          <div class="dc-ch-icon">⚗️</div>
+          <div class="dc-title gu" style="font-size:13px">ਜੀਵਨ ਪ੍ਰਕਿਰਿਆਵਾਂ</div>
+          <div class="dc-sub">Class 10 · Science</div>
+          <div class="dc-prog-bar" style="margin-top:8px"><div class="dc-prog-fill" style="width:62%"></div></div>
+          <div style="font-size:10px;color:var(--tx3);margin-top:4px;font-family:var(--body)">62% complete</div>
+        </div>
+
+        <!-- MAIN AI card -->
+        <div class="dc dc-main" style="padding:0">
+          <div class="dc-main-bar">
+            <div class="dc-subject">⚗️ ਜੀਵਨ ਪ੍ਰਕਿਰਿਆਵਾਂ · Class 10</div>
+            <div class="dc-board">PSEB</div>
+          </div>
+          <div class="dc-modes">
+            <div class="dc-mode on">ਸਮਝਾਓ</div>
+            <div class="dc-mode">Exam Mode</div>
+            <div class="dc-mode">ਵਿਸਤਾਰ</div>
+          </div>
+          <div class="dc-body">
+            <div class="dc-q-wrap">
+              <div class="dc-q-meta">Student question</div>
+              <div class="dc-q-bub">ਸਾਡੀ ਨਬਜ਼ ਦੀ ਗਤੀ ਕਸਰਤ ਤੋਂ ਬਾਅਦ ਕਿਉਂ ਵੱਧ ਜਾਂਦੀ ਹੈ?</div>
+            </div>
+            <div class="dc-a-row">
+              <div class="dc-a-ic">S</div>
+              <div>
+                <div class="dc-a-bub">
+                  <div class="typing-d" id="td2"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+                  <span id="ans2"></span><span class="cr" id="cr2" style="display:none"></span>
+                </div>
+                <div class="dc-src" id="src2" style="opacity:0;transition:opacity .5s">📘 PSEB Science Ch.6 · Page 94</div>
+              </div>
+            </div>
+          </div>
+          <div class="dc-chips-row" id="chips2">
+            <span class="dc-chip blue gu">Class 10 Science</span>
+            <span class="dc-chip green gu">ਜੀਵਨ ਪ੍ਰਕਿਰਿਆਵਾਂ</span>
+            <span class="dc-chip gold gu">ਪਿਛਲੇ ਸਾਲ ਦਾ ਪ੍ਰਸ਼ਨ</span>
+          </div>
+        </div>
+
+        <!-- Streak card -->
+        <div class="dc dc-streak">
+          <div class="dc-lbl">Study Streak</div>
+          <div style="font-size:20px;margin-bottom:4px">🔥</div>
+          <div class="dc-streak-n">7 days</div>
+          <div class="dc-sub">Keep going!</div>
+        </div>
+
+        <!-- Progress card -->
+        <div class="dc dc-progress">
+          <div class="dc-lbl">This week</div>
+          <div class="dc-prog-n">78%</div>
+          <div class="dc-sub">Accuracy rate</div>
+          <div class="dc-prog-bar"><div class="dc-prog-fill" style="width:78%"></div></div>
+        </div>
+
+        <!-- Past paper card -->
+        <div class="dc dc-paper">
+          <div class="dc-lbl">Past Paper</div>
+          <div class="dc-paper-icon">📋</div>
+          <div class="dc-paper-year">PSEB 2023</div>
+          <div class="dc-sub">30 questions</div>
+          <div style="display:inline-flex;margin-top:8px;padding:3px 9px;background:var(--bl);color:var(--blue);border-radius:var(--rf);font-size:10px;font-weight:600;font-family:var(--body)">Attempt →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="sec feat-s" id="feat">
+  <div class="sw">
+    <div class="ey rv">✦ What makes Sikhya different</div>
+    <h2 class="st rv">Built for students. Not for demos.</h2>
+    <p class="ss rv">Four tools that understand your syllabus, your gaps, and your goals.</p>
+    <div class="feat-grid">
+      <div class="feat-card rv">
+        <div class="feat-icon" style="background:#EFF6FF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.75" stroke-linecap="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 8v4l3 3"/></svg></div>
+        <div class="feat-h">AI Study Companion</div>
+        <p class="feat-p">Answers in Punjabi, Hindi, or English. Linked to your exact PSEB chapter and page. Not a generic search engine.</p>
+      </div>
+      <div class="feat-card rv d1">
+        <div class="feat-icon" style="background:#FFFBEB"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="1.75" stroke-linecap="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+        <div class="feat-h">Previous Year Questions</div>
+        <p class="feat-p">Real PSEB board exam questions from 2018–2024. With model answers, mark schemes, and AI explanations.</p>
+      </div>
+      <div class="feat-card rv d2">
+        <div class="feat-icon" style="background:#F0FDF4"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.75" stroke-linecap="round"><path d="M5 3h14M5 3a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2"/><path d="M9 9h6M9 13h4"/></svg></div>
+        <div class="feat-h">Personal Learning Path</div>
+        <p class="feat-p">Sikhya tracks which topics you find hard and creates a revision sequence tailored to your gaps — not a generic roadmap.</p>
+      </div>
+      <div class="feat-card rv d3">
+        <div class="feat-icon" style="background:#F5F3FF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.75" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+        <div class="feat-h">Track Growth</div>
+        <p class="feat-p">See your accuracy per chapter, study streaks, weak areas, and predicted exam score. All in one clear view.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section class="demo-s" id="demo">
+  <div class="demo-glow"></div>
+  <div class="demo-wrap">
+    <div class="demo-ey rv">Live Demo</div>
+    <h2 class="demo-title rv">Real questions. Real answers.</h2>
+    <div class="demo-card rv">
+      <div class="demo-hd">
+        <div class="dtr" style="background:#FF5F57"></div>
+        <div class="dtr" style="background:#FEBC2E"></div>
+        <div class="dtr" style="background:#28C840"></div>
+        <span class="demo-cht" id="demo-label">Sikhya AI · Class 10 Science · ਜੀਵਨ ਪ੍ਰਕਿਰਿਆਵਾਂ</span>
+      </div>
+      <div class="demo-tabs">
+        <div class="demo-tab on">ਸਮਝਾਓ</div>
+        <div class="demo-tab">Exam Mode</div>
+        <div class="demo-tab">Step-by-step</div>
+      </div>
+      <div class="demo-msgs">
+        <div class="dm-u"><div class="b" id="demo-q">ਸਾਡੀ ਨਬਜ਼ ਦੀ ਗਤੀ ਕਸਰਤ ਤੋਂ ਬਾਅਦ ਕਿਉਂ ਵੱਧ ਜਾਂਦੀ ਹੈ?</div></div>
+        <div class="dm-a">
+          <div class="dm-a-ic">S</div>
+          <div>
+            <div class="b">
+              <div class="typing-d" id="demo-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+              <span id="demo-ans"></span><span class="cr" id="demo-cr" style="display:none"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-src" id="demo-chips" style="opacity:0;transition:opacity .5s">
+        <span class="dsrc" id="dc1">Class 10 Science</span>
+        <span class="dsrc" id="dc2">ਜੀਵਨ ਪ੍ਰਕਿਰਿਆਵਾਂ</span>
+        <span class="dsrc" id="dc3">ਪਿਛਲੇ ਸਾਲ ਦਾ ਪ੍ਰਸ਼ਨ</span>
+        <span class="dsrc" id="dc4">ਸਰਲ ਵਿਆਖਿਆ</span>
+      </div>
+      <div class="demo-follow" id="demo-follow" style="opacity:0;transition:opacity .5s"><strong>ਸੁਝਾਅ:</strong> ਕਸਰਤ ਦੌਰਾਨ ਦਿਲ ਦੀ ਧੜਕਣ ਕਿਵੇਂ ਪ੍ਰਭਾਵਿਤ ਹੁੰਦੀ ਹੈ?</div>
+    </div>
+    <div class="demo-subjects">
+      <button class="demo-subj on" data-idx="0">Science</button>
+      <button class="demo-subj" data-idx="1">Social Science</button>
+      <button class="demo-subj" data-idx="2">Mathematics</button>
+      <button class="demo-subj" data-idx="3">Punjabi</button>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="sec arch-s" id="arch">
+  <div class="sw">
+    <div class="ey rv">✦ How Sikhya Works</div>
+    <h2 class="st rv">Built as a complete learning system.</h2>
+    <div class="arch-layout rv">
+      <div class="arch-desc">
+        <div class="arch-badge">Not just a chatbot</div>
+        <p>Sikhya is a <strong>retrieval-augmented learning system</strong> built specifically around PSEB curriculum documents, past papers, and chapter-level knowledge.</p>
+        <p>When you ask a question, Sikhya doesn't just call a language model — it first retrieves the most relevant passages from your actual textbook, reranks them for accuracy, and then generates a <strong>syllabus-grounded answer</strong>.</p>
+        <p>Your <strong>uploaded photos</strong> go through an OCR pipeline before reaching the AI. Every answer includes a traceable source in your textbook.</p>
+      </div>
+      <div class="arch-diagram">
+        <div class="arch-cols">
+          <div>
+            <div class="arch-col-label">Inference Pipeline</div>
+            <div class="arch-pipe">
+              <div class="arch-node highlight">Student Interface</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Next.js Frontend</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">API Gateway · FastAPI</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Query Router</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Embedding Model</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Vector Database</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Retriever + Reranker</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Language Model</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node green">Response Composer</div>
+            </div>
+          </div>
+          <div>
+            <div class="arch-col-label">Document Pipeline</div>
+            <div class="arch-pipe">
+              <div class="arch-node">Document Ingestion</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">OCR Pipeline</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Chunking Engine</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">Metadata Tagging</div>
+              <div class="arch-arrow"></div><div class="arch-arrow-tip"></div>
+              <div class="arch-node">File Storage</div>
+              <div class="arch-divider"></div>
+              <div class="arch-node" style="opacity:.6;font-size:11px">Monitoring · Logging</div>
+              <div class="arch-divider"></div>
+              <div class="arch-node" style="opacity:.6;font-size:11px">A/B Testing · Evals</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="jou">
+  <div class="sw">
+    <div class="ey rv">✦ Learning Flow</div>
+    <h2 class="st rv">From doubt to mastery.</h2>
+    <div class="jst" id="jst">
+      <div class="jl"></div><div class="jp" id="jp"></div>
+      <div class="js rv"><div class="jn">1</div><div class="jtt gu">ਸ਼ੱਕ ਪੁੱਛੋ</div><p class="jd">Ask any doubt in Punjabi, Hindi, or English — typed or photographed.</p></div>
+      <div class="js rv d1"><div class="jn">2</div><div class="jtt">Understand</div><p class="jd">Get a clear, chapter-linked explanation from your actual PSEB textbook.</p></div>
+      <div class="js rv d2"><div class="jn">3</div><div class="jtt">Practice</div><p class="jd">Solve targeted questions on the same topic. Instant feedback and corrections.</p></div>
+      <div class="js rv d3"><div class="jn">4</div><div class="jtt gu">ਮਾਹਰ ਬਣੋ</div><p class="jd">Track weak areas, revise smarter, and walk into exams with confidence.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mis" id="mis">
+  <div class="rv mis-pa">ਸਿੱਖਿਆ ਹਰ ਵਿਦਿਆਰਥੀ ਦਾ ਹੱਕ ਹੈ।</div>
+  <div class="rv mis-en">Education is every student's right.</div>
+  <p class="mis-sub rv">Built in Punjab, for Punjab's students. Free because it was made for the students who need it most.</p>
+  <div class="mis-line rv"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-s">
+  <div class="ctai rv">
+    <h2 class="ctat">Ready to start<br><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">learning?</span></h2>
+    <p class="ctas">Free today, tomorrow, and always. No subscriptions. No paywalls. Just learning.</p>
+    <a class="btn-p" href="auth.html">ਸ਼ੁਰੂ ਕਰੋ — Start Free</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fw">
+    <div class="ftp">
+      <div>
+        <div class="fbr"><div class="lm">S</div>Sikhya<span class="fbr-pa">ਸਿੱਖਿਆ — ਸਿੱਖਦੇ ਰਹੋ</span></div>
+        <p class="fab">Free AI learning for PSEB students. Chapter-aware, multilingual, exam-ready.</p>
+      </div>
+      <div>
+        <div class="fch">Product</div>
+        <ul class="fl">
+          <li><a href="app.html">AI Tutor</a></li>
+          <li><a href="app.html#practice">Practice</a></li>
+          <li><a href="app.html#tests">Mock Tests</a></li>
+          <li><a href="app.html#resources">Past Papers</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fch">Classes</div>
+        <ul class="fl">
+          <li><a href="#">Class 9 & 10</a></li>
+          <li><a href="#">Class 11 & 12</a></li>
+          <li><a href="#">Science</a></li>
+          <li><a href="#">Mathematics</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fch">Support</div>
+        <ul class="fl">
+          <li><a href="#">Help</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Report a Bug</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fb-row">
+      <span>© 2026 Sikhya · ਸਿੱਖਿਆ</span>
+      <span style="opacity:.3;font-style:italic">Free for all students, always.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- TWEAKS -->
+<div class="twp" id="twp">
+  <div class="twh"><h4>Tweaks</h4><button class="twx" id="twx">×</button></div>
+  <div class="twb">
+    <div>
+      <div class="twl">Accent Color</div>
+      <div class="tw-sw">
+        <div class="swatch on" style="background:linear-gradient(135deg,#2563EB,#16A34A)" onclick="setTheme('blue',this)"></div>
+        <div class="swatch" style="background:linear-gradient(135deg,#7C3AED,#2563EB)" onclick="setTheme('violet',this)"></div>
+        <div class="swatch" style="background:linear-gradient(135deg,#C2410C,#166534)" onclick="setTheme('saffron',this)"></div>
+        <div class="swatch" style="background:linear-gradient(135deg,#0891B2,#059669)" onclick="setTheme('teal',this)"></div>
+      </div>
+    </div>
+    <div>
+      <div class="twl">Motion</div>
+      <div class="tw-pg">
+        <button class="tpg on" onclick="setMotion('on',this)">On</button>
+        <button class="tpg" onclick="setMotion('off',this)">Reduced</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// TWEAKS
+const TD = /*EDITMODE-BEGIN*/{"theme":"blue","motion":"on"}/*EDITMODE-END*/;
+window.addEventListener('message', e => {
+  if (e.data.type === '__activate_edit_mode') document.getElementById('twp').style.display = 'block';
+  if (e.data.type === '__deactivate_edit_mode') document.getElementById('twp').style.display = 'none';
+});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+document.getElementById('twx').onclick = () => { document.getElementById('twp').style.display='none'; window.parent.postMessage({type:'__edit_mode_dismissed'},'*'); };
+const THEMES = {
+  blue:{blue:'#2563EB',green:'#16A34A',grad:'linear-gradient(90deg,#2563EB,#16A34A)'},
+  violet:{blue:'#7C3AED',green:'#2563EB',grad:'linear-gradient(90deg,#7C3AED,#2563EB)'},
+  saffron:{blue:'#C2410C',green:'#166534',grad:'linear-gradient(90deg,#C2410C,#166534)'},
+  teal:{blue:'#0891B2',green:'#059669',grad:'linear-gradient(90deg,#0891B2,#059669)'}
+};
+function setTheme(n,el){document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('on'));el.classList.add('on');const t=THEMES[n];document.documentElement.style.setProperty('--blue',t.blue);document.documentElement.style.setProperty('--green',t.green);document.documentElement.style.setProperty('--grad',t.grad);window.parent.postMessage({type:'__edit_mode_set_keys',edits:{theme:n}},'*');}
+function setMotion(v,el){el.parentElement.querySelectorAll('.tpg').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.dc-main,.dc-chapter,.dc-streak,.dc-progress,.dc-paper').forEach(e=>e.style.animation=v==='off'?'none':'');window.parent.postMessage({type:'__edit_mode_set_keys',edits:{motion:v}},'*');}
+
+// NAV SCROLL
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>navEl.classList.toggle('glass',scrollY>10),{passive:true});
+if(scrollY>10)navEl.classList.add('glass');
+document.getElementById('hbg').onclick=()=>document.getElementById('mob-menu').classList.toggle('open');
+document.querySelectorAll('.mob-a,.mob-cta').forEach(a=>a.addEventListener('click',()=>document.getElementById('mob-menu').classList.remove('open')));
+
+// REVEALS
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('vis');ro.unobserve(e.target);});},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// JOURNEY
+const jo=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;document.getElementById('jp').style.width='75%';document.querySelectorAll('.js').forEach((s,i)=>setTimeout(()=>s.classList.add('act'),i*360));jo.unobserve(e.target);});},{threshold:.3});
+const jstEl=document.getElementById('jst');if(jstEl)jo.observe(jstEl);
+
+// TYPING ENGINE
+function typeText(elId, crId, text, speed, onDone) {
+  const el=document.getElementById(elId), cr=document.getElementById(crId);
+  if(!el)return; el.textContent=''; if(cr)cr.style.display='inline-block';
+  let i=0;
+  function t(){if(i<text.length){el.textContent+=text[i++];setTimeout(t,i<4?60:speed);}else{if(cr)cr.style.display='none';if(onDone)onDone();}}
+  t();
+}
+
+// HERO MINI CARD typing
+const heroAns="ਕਸਰਤ ਕਰਨ ਸਮੇਂ ਸਰੀਰ ਨੂੰ ਵੱਧ ਊਰਜਾ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ। ਦਿਲ ਖੂਨ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਪੰਪ ਕਰਦਾ ਹੈ।";
+function runHeroAnim(){
+  const td2=document.getElementById('td2'), src2=document.getElementById('src2'), chips2=document.getElementById('chips2');
+  document.getElementById('ans2').textContent=''; if(chips2)chips2.classList.remove('show'); if(src2)src2.style.opacity='0';
+  if(td2)td2.style.display='flex';
+  setTimeout(()=>{
+    if(td2)td2.style.display='none';
+    typeText('ans2','cr2',heroAns,22,()=>{
+      if(src2)src2.style.opacity='1';
+      if(chips2)chips2.classList.add('show');
+      setTimeout(()=>runHeroAnim(),5000);
+    });
+  },1200);
+}
+setTimeout(runHeroAnim,1800);
+
+// DEMO ROTATION
+const DEMOS=[
+  {subj:'Science',label:'Class 10 Science · ਜੀਵਨ ਪ੍ਰਕਿਰਿਆਵਾਂ',q:'ਸਾਡੀ ਨਬਜ਼ ਦੀ ਗਤੀ ਕਸਰਤ ਤੋਂ ਬਾਅਦ ਕਿਉਂ ਵੱਧ ਜਾਂਦੀ ਹੈ?',a:'ਕਸਰਤ ਕਰਨ ਸਮੇਂ ਸਰੀਰ ਨੂੰ ਵੱਧ ਊਰਜਾ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ। ਇਸ ਲਈ ਕੋਸ਼ਿਕਾਵਾਂ ਨੂੰ ਵੱਧ ਆਕਸੀਜਨ ਅਤੇ ਪੋਸ਼ਕ ਤੱਤਾਂ ਦੀ ਲੋੜ ਪੈਂਦੀ ਹੈ। ਦਿਲ ਖੂਨ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਪੰਪ ਕਰਦਾ ਹੈ, ਜਿਸ ਕਾਰਨ ਨਬਜ਼ ਦੀ ਗਤੀ ਵੱਧ ਜਾਂਦੀ ਹੈ।',chips:['Class 10 Science','ਜੀਵਨ ਪ੍ਰਕਿਰਿਆਵਾਂ','ਪਿਛਲੇ ਸਾਲ ਦਾ ਪ੍ਰਸ਼ਨ','ਸਰਲ ਵਿਆਖਿਆ'],follow:'ਕਸਰਤ ਦੌਰਾਨ ਦਿਲ ਦੀ ਧੜਕਣ ਕਿਵੇਂ ਪ੍ਰਭਾਵਿਤ ਹੁੰਦੀ ਹੈ?'},
+  {subj:'Social Science',label:'Class 10 SST · ਭੂਗੋਲ',q:'ਭਾਰਤ ਵਿੱਚ ਮਾਨਸੂਨ ਵਰਖਾ ਕਿਉਂ ਹੁੰਦੀ ਹੈ?',a:'ਮਾਨਸੂਨ ਹਵਾਵਾਂ ਹਿੰਦ ਮਹਾਸਾਗਰ ਤੋਂ ਭਾਰਤ ਵੱਲ ਆਉਂਦੀਆਂ ਹਨ। ਗਰਮੀ ਵਿੱਚ ਭੂਮੀ ਜ਼ਿਆਦਾ ਗਰਮ ਹੋ ਜਾਂਦੀ ਹੈ, ਜਿਸ ਕਾਰਨ ਘੱਟ ਦਬਾਅ ਬਣਦਾ ਹੈ। ਸਮੁੰਦਰੀ ਹਵਾਵਾਂ ਇਸ ਵੱਲ ਖਿੱਚੀਆਂ ਜਾਂਦੀਆਂ ਹਨ ਅਤੇ ਵਰਖਾ ਲਿਆਉਂਦੀਆਂ ਹਨ।',chips:['Class 10 SST','ਭਾਰਤ ਦਾ ਭੂਗੋਲ','ਮੌਸਮ ਵਿਭਾਗ'],follow:'ਮਾਨਸੂਨ ਦਾ ਭਾਰਤ ਦੀ ਖੇਤੀ ਤੇ ਕੀ ਪ੍ਰਭਾਵ ਹੈ?'},
+  {subj:'Mathematics',label:'Class 10 Mathematics · Trigonometry',q:'Sin²θ + Cos²θ = 1 ਕਿਵੇਂ ਆਉਂਦਾ ਹੈ?',a:'ਇੱਕ ਸਮਕੋਣ ਤ੍ਰਿਕੋਣ ਵਿੱਚ Pythagoras theorem ਦੇ ਅਨੁਸਾਰ: a² + b² = c². ਦੋਵੇਂ ਪਾਸੇ c² ਨਾਲ ਭਾਗ ਦਿਓ: (a/c)² + (b/c)² = 1. ਯਾਦ ਰੱਖੋ sinθ = a/c ਅਤੇ cosθ = b/c, ਇਸ ਲਈ sin²θ + cos²θ = 1.',chips:['Class 10 Math','Trigonometry','ਫਾਰਮੂਲਾ ਸ਼ੀਟ'],follow:'tan²θ + 1 = sec²θ ਕਿਵੇਂ ਸਾਬਿਤ ਕਰੀਏ?'},
+  {subj:'Punjabi',label:'Class 10 Punjabi · ਗਦ ਭਾਗ',q:'ਲੇਖਕ ਨੇ ਬਜ਼ਾਰ ਦੇ ਰੋਲਿਆਂ ਦੀ ਤੁਲਨਾ ਕਿਨ੍ਹਾਂ ਨਾਲ ਕੀਤੀ ਹੈ?',a:'ਲੇਖਕ ਨੇ ਬਜ਼ਾਰ ਦੇ ਰੋਲਿਆਂ ਦੀ ਤੁਲਨਾ ਫੁੱਲਾਂ ਦੀ ਸੁਗੰਧ ਨਾਲ ਕੀਤੀ ਹੈ। ਜਿਵੇਂ ਫੁੱਲਾਂ ਦੀ ਖੁਸ਼ਬੂ ਆਪਣੇ ਆਪ ਫੈਲਦੀ ਹੈ, ਉਸੇ ਤਰ੍ਹਾਂ ਬਜ਼ਾਰ ਦੀਆਂ ਅਵਾਜ਼ਾਂ ਵੀ ਚਾਰੇ ਪਾਸੇ ਫੈਲ ਜਾਂਦੀਆਂ ਹਨ।',chips:['Class 10 Punjabi','ਗਦ ਭਾਗ','ਅਰਥ-ਬੋਧ'],follow:'ਇਸ ਪਾਠ ਦਾ ਕੇਂਦਰੀ ਵਿਸ਼ਾ ਕੀ ਹੈ?'}
+];
+
+let demoRunning=false,demoTimer=null;
+function runDemo(idx){
+  const d=DEMOS[idx];
+  const qEl=document.getElementById('demo-q'),aEl=document.getElementById('demo-ans'),crEl=document.getElementById('demo-cr');
+  const dotsEl=document.getElementById('demo-dots'),chipsEl=document.getElementById('demo-chips'),followEl=document.getElementById('demo-follow');
+  const labelEl=document.getElementById('demo-label');
+  if(qEl)qEl.textContent=d.q;
+  if(labelEl)labelEl.textContent='Sikhya AI · '+d.label;
+  if(aEl)aEl.textContent='';
+  if(chipsEl){chipsEl.style.opacity='0';const spans=chipsEl.querySelectorAll('.dsrc');d.chips.forEach((c,i)=>{if(spans[i])spans[i].textContent=c;});}
+  if(followEl){followEl.style.opacity='0';followEl.innerHTML='<strong>ਸੁਝਾਅ:</strong> '+d.follow;}
+  if(dotsEl)dotsEl.style.display='flex';
+  if(crEl)crEl.style.display='none';
+  setTimeout(()=>{
+    if(dotsEl)dotsEl.style.display='none';
+    if(crEl)crEl.style.display='inline-block';
+    let i=0;
+    function type(){
+      if(!aEl)return;
+      if(i<d.a.length){aEl.textContent+=d.a[i++];setTimeout(type,i<4?80:24);}
+      else{
+        if(crEl)crEl.style.display='none';
+        if(chipsEl)chipsEl.style.opacity='1';
+        setTimeout(()=>{if(followEl)followEl.style.opacity='1';},600);
+        demoTimer=setTimeout(()=>{const next=(idx+1)%DEMOS.length;document.querySelectorAll('.demo-subj').forEach((b,i)=>b.classList.toggle('on',i===next));runDemo(next);},7000);
+      }
+    }
+    type();
+  },1400);
+}
+document.querySelectorAll('.demo-subj').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    clearTimeout(demoTimer);
+    const idx=+this.dataset.idx;
+    document.querySelectorAll('.demo-subj').forEach((b,i)=>b.classList.toggle('on',i===idx));
+    runDemo(idx);
+  });
+});
+// Start demo when it enters view
+const demoObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting&&!demoRunning){demoRunning=true;runDemo(0);}});},{threshold:.3});
+const demoEl=document.querySelector('.demo-s');if(demoEl)demoObs.observe(demoEl);
+</script>
+</body>
+</html>
