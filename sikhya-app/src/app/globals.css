@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light: clean warm-white */
+    --bg:            247 246 243;
+    --surface:       255 255 255;
+    --surface-2:     251 250 247;
+    --subtle:        243 240 234;
+    --border:        224 219 208;
+    --border-strong: 200 193 178;
+    --text:          22 16 8;
+    --text-2:        74 64 48;
+    --muted:         148 136 116;
+
+    /* Saffron primary — deep for light bg readability */
+    --accent:        174 94 3;       /* deep amber — AA contrast on white */
+    --accent-soft:   174 94 3;
+    /* Indigo secondary */
+    --accent-2:      88 92 230;
+
+    --danger:        220 38 38;
+    --warning:       202 110 5;
+    --success:       21 128 61;
+
+    --shadow-1: 0 1px 3px rgba(22,16,8,.05);
+    --shadow-2: 0 4px 18px rgba(22,16,8,.08);
+    --shadow-3: 0 16px 48px rgba(22,16,8,.12);
+    --glow:     0 0 40px rgba(174,94,3,.20);
+  }
+
+  .dark {
+    /* Midnight Saffron — deep cool-dark so saffron glows like flame */
+    --bg:            8 8 14;
+    --surface:       13 13 20;
+    --surface-2:     19 18 28;
+    --subtle:        26 25 38;
+    --border:        38 37 56;
+    --border-strong: 58 56 84;
+    --text:          252 249 240;
+    --text-2:        206 200 186;
+    --muted:         112 106 90;
+
+    /* Saffron — vibrant against cool dark */
+    --accent:        247 171 30;     /* rich saffron-gold */
+    --accent-soft:   247 171 30;
+    /* Indigo secondary */
+    --accent-2:      130 142 255;
+
+    --danger:        248 113 113;
+    --warning:       247 171 30;
+    --success:       74 222 128;
+
+    --shadow-1: 0 1px 2px rgba(0,0,0,.60);
+    --shadow-2: 0 4px 24px rgba(0,0,0,.50);
+    --shadow-3: 0 16px 48px rgba(0,0,0,.60);
+    --glow:     0 0 60px rgba(247,171,30,.38);
+  }
+
+  * { @apply border-border; }
+  html, body { @apply h-full antialiased; }
+  body {
+    @apply bg-bg text-fg font-sans;
+    font-feature-settings: 'cv11','ss01';
+    /* Saffron flame top-left + indigo depth bottom-right */
+    background-image:
+      radial-gradient(900px 700px at 2% 0%,    rgb(var(--accent)   / 0.08) 0%, transparent 55%),
+      radial-gradient(600px 500px at 98% 100%,  rgb(var(--accent-2) / 0.06) 0%, transparent 55%);
+    background-attachment: fixed;
+  }
+
+  ::-webkit-scrollbar        { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track  { background: transparent; }
+  ::-webkit-scrollbar-thumb  { @apply bg-border rounded; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-border-strong; }
+
+  *:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(var(--accent) / .22);
+    border-radius: inherit;
+  }
+}
+
+@layer utilities {
+  .gradient-text {
+    @apply bg-gradient-to-br from-accent to-accent-2 bg-clip-text text-transparent;
+  }
+  .gradient-bg {
+    background: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--accent-2)));
+  }
+  /* Golden ratio spacing helpers: 1 : 1.618 */
+  .gr-gap { gap: clamp(14px, 2.2vw, 22px); }
+}
+
+/* ─── User preference: text size (set on <html data-text-size>) ─── */
+html[data-text-size="sm"] { font-size: 14px; }
+html[data-text-size="md"] { font-size: 16px; }
+html[data-text-size="lg"] { font-size: 18px; }
+html[data-text-size="xl"] { font-size: 20px; }
+
+/* ─── User preference: dyslexia-friendly spacing ─── */
+html[data-dyslexia="1"] body {
+  letter-spacing: 0.03em;
+  word-spacing: 0.08em;
+  line-height: 1.7;
+}
+
+/* ─── User preference / OS: reduced motion ─── */
+html[data-reduced-motion="1"] *,
+html[data-reduced-motion="1"] *::before,
+html[data-reduced-motion="1"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* safe-area padding for mobile bottom nav */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
