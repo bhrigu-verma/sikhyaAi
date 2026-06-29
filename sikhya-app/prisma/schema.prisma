@@ -1,0 +1,389 @@
+// ─── Prisma schema for Sikhya ───
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  image         String?
+  password      String?   // hashed (bcrypt) for credentials auth; null for OAuth-only
+
+  grade         String?   // e.g. "Class 10"
+  board         String?   // e.g. "PSEB"
+  goal          String?   // e.g. "Exam Preparation"
+
+  // ─── Gamification ───
+  xp            Int       @default(0)
+  level         Int       @default(1)
+  streakFreezes Int       @default(2)   // "skip a day" tokens
+
+  accounts      Account[]
+  sessions      Session[]
+  apiKeys       ApiKey[]
+  chats         Chat[]
+  progress      Progress[]
+  parentLinks   ParentLink[]
+  abuseLogs     AbuseLog[]
+  mockTests     MockTest[]
+  mockAttempts  MockTestAttempt[]
+  analytics     AnalyticsEvent[]
+  reviews       Review[]
+  studyPlans    StudyPlan[]
+  doubts        Doubt[]
+  gradedAnswers GradedAnswer[]
+  userBadges    UserBadge[]
+  xpEvents      XPEvent[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Secure, revocable parent access codes. Replaces exposing raw User.id.
+// A parent enters `code` on /parent to view the student's progress (read-only).
+model ParentLink {
+  id         String    @id @default(cuid())
+  userId     String    // the student this link grants access to
+  code       String    @unique // short, random, URL-safe (not the user id)
+  label      String?   // e.g. "Mummy", "Papa"
+  parentEmail String?  // optional — enables weekly progress digest emails
+  digestOptIn Boolean  @default(false)
+  lastDigestAt DateTime?
+  active     Boolean   @default(true)
+  expiresAt  DateTime? // null = never expires
+  lastUsedAt DateTime?
+  viewCount  Int       @default(0)
+  createdAt  DateTime  @default(now())
+
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+
+// Records moderation/safety violations and rate-limit abuse for a minors' product.
+model AbuseLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  route     String   // e.g. "tutor/chat"
+  kind      String   // "moderation" | "rate_limit"
+  reason    String   // matched category / limit name
+  snippet   String?  @db.Text // truncated, redacted offending input (for review)
+  ip        String?
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  @@index([userId, createdAt])
+  @@index([kind, createdAt])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+// User-supplied AI provider keys. `encryptedKey` is AES-256-GCM ciphertext.
+model ApiKey {
+  id            String   @id @default(cuid())
+  userId        String
+  provider      String   // openai | anthropic | google | groq
+  label         String
+  encryptedKey  String   @db.Text   // base64( iv | authTag | ciphertext )
+  maskedKey     String   // shown to UI, e.g. "sk-...K9p2"
+  active        Boolean  @default(false)
+  requestsCount Int      @default(0)
+  lastUsedAt    DateTime?
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+
+// AI Tutor conversations
+model Chat {
+  id        String    @id @default(cuid())
+  userId    String
+  title     String
+  subject   String?
+  mode      String    @default("simple")  // simple | exam | deep
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, updatedAt])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  chatId    String
+  role      String   // user | assistant | system
+  content   String   @db.Text
+  sources   Json?    // [{ title, sub }]
+  createdAt DateTime @default(now())
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  @@index([chatId, createdAt])
+}
+
+// Per-user, per-topic progress tracking
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  subject   String
+  chapter   String
+  topic     String?
+  score     Int?     // 0–100, accuracy or completion %
+  status    String   @default("upcoming")  // upcoming | active | done
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, subject, chapter, topic])
+  @@index([userId])
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P1 — Mock tests
+// ═══════════════════════════════════════════════════════════════════════
+model MockTest {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  subject     String
+  classNum    Int
+  board       String   @default("PSEB")
+  durationMin Int      @default(30)
+  questions   Json     // [{ q, options[], answer, explanation, marks }]
+  totalMarks  Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempts    MockTestAttempt[]
+  @@index([userId, createdAt])
+}
+
+model MockTestAttempt {
+  id           String    @id @default(cuid())
+  mockTestId   String
+  userId       String
+  answers      Json      // { [questionIndex]: "A" }
+  score        Int       @default(0)   // marks awarded
+  totalMarks   Int       @default(0)
+  correctCount Int       @default(0)
+  totalCount   Int       @default(0)
+  timeTakenSec Int       @default(0)
+  startedAt    DateTime  @default(now())
+  submittedAt  DateTime?
+
+  mockTest     MockTest  @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, submittedAt])
+  @@index([mockTestId])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P1 — Analytics events (powers weak-topic detection + personalization)
+// ═══════════════════════════════════════════════════════════════════════
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  type      String   // chat_message | practice_attempt | mock_submit | doubt_asked | answer_graded | review_done
+  subject   String?
+  chapter   String?
+  topic     String?
+  correct   Boolean? // for question-type events
+  score     Int?
+  latencyMs Int?
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+  @@index([userId, subject, topic])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P2 — Spaced repetition (SM-2)
+// ═══════════════════════════════════════════════════════════════════════
+model Review {
+  id            String   @id @default(cuid())
+  userId        String
+  subject       String
+  chapter       String
+  topic         String?
+  prompt        String   @db.Text       // the thing to recall (question / concept)
+  answer        String   @db.Text       // the correct answer / explanation
+  easeFactor    Float    @default(2.5)
+  intervalDays  Int      @default(0)
+  repetitions   Int      @default(0)
+  dueAt         DateTime @default(now())
+  lastReviewedAt DateTime?
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, dueAt])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P2 — Study plans
+// ═══════════════════════════════════════════════════════════════════════
+model StudyPlan {
+  id         String          @id @default(cuid())
+  userId     String
+  title      String
+  subject    String?
+  classNum   Int
+  targetDate DateTime
+  active     Boolean         @default(true)
+  createdAt  DateTime        @default(now())
+
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items      StudyPlanItem[]
+  @@index([userId, active])
+}
+
+model StudyPlanItem {
+  id        String    @id @default(cuid())
+  planId    String
+  subject   String
+  chapter   String
+  topic     String?
+  dueDate   DateTime
+  status    String    @default("todo") // todo | in_progress | done
+  order     Int       @default(0)
+
+  plan      StudyPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  @@index([planId, dueDate])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P2 — Doubt-from-photo
+// ═══════════════════════════════════════════════════════════════════════
+model Doubt {
+  id           String   @id @default(cuid())
+  userId       String
+  imageUrl     String?  @db.Text   // stored image (data URL or remote)
+  questionText String   @db.Text   // OCR'd / extracted question
+  answer       String   @db.Text
+  subject      String?
+  classNum     Int?
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, createdAt])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P2 — Written-answer grading
+// ═══════════════════════════════════════════════════════════════════════
+model GradedAnswer {
+  id            String   @id @default(cuid())
+  userId        String
+  subject       String?
+  chapter       String?
+  question      String   @db.Text
+  studentAnswer String   @db.Text
+  maxMarks      Int
+  awardedMarks  Float
+  feedback      Json     // { strengths[], improvements[], modelAnswer, rubric[] }
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, createdAt])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P3 — Previous year questions bank
+// ═══════════════════════════════════════════════════════════════════════
+model PYQ {
+  id        String   @id @default(cuid())
+  board     String   @default("PSEB")
+  classNum  Int
+  subject   String
+  year      Int
+  chapter   String?
+  question  String   @db.Text
+  answer    String?  @db.Text
+  marks     Int      @default(1)
+  paperType String?  // "Annual" | "Sample" | "Pre-board"
+  createdAt DateTime @default(now())
+
+  @@index([board, classNum, subject, year])
+  @@index([subject, chapter])
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  P3 — Gamification
+// ═══════════════════════════════════════════════════════════════════════
+model Badge {
+  id          String      @id @default(cuid())
+  code        String      @unique // "first_chat" | "streak_7" | "mock_master" ...
+  name        String
+  description String
+  icon        String      // emoji or icon key
+  xpReward    Int         @default(0)
+  userBadges  UserBadge[]
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  @@unique([userId, badgeId])
+  @@index([userId])
+}
+
+model XPEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  amount    Int
+  reason    String   // "chat" | "practice_correct" | "mock_submit" | "review" | "badge"
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, createdAt])
+}
+
+// ─── OTP tokens for email verification (signup) and password reset ───
+// One row per pending verification. Cleaned up on use or expiry.
+model OtpToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   // 6-digit code (hashed)
+  type      String   // "verify_email" | "reset_password"
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email, type])
+}
