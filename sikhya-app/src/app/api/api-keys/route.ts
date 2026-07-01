@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 import { encrypt, mask } from '@/lib/crypto';
 import { z } from 'zod';
 
-const Provider = z.enum(['openai','anthropic','google','groq']);
+const Provider = z.enum(['openai','anthropic','google','groq','nvidia']);
 
 const PostSchema = z.object({
   provider: Provider,

@@ -9,7 +9,7 @@ import { Toggle } from '@/components/ui/toggle';
 import { SectionHeader } from '@/components/ui/section-header';
 import { cn } from '@/lib/utils';
 
-type Provider = 'openai' | 'anthropic' | 'google' | 'groq';
+type Provider = 'openai' | 'anthropic' | 'google' | 'groq' | 'nvidia';
 
 type ApiKey = {
   id: string;
@@ -26,6 +26,7 @@ const PROVIDERS: Record<Provider, { name: string; model: string; hint: string; b
   anthropic: { name: 'Anthropic',  model: 'Claude 3.5 Sonnet, Haiku', hint: 'sk-ant-', bg: '#D97757' },
   google:    { name: 'Google',     model: 'Gemini Pro, Flash',         hint: 'AIza...', bg: '#4285F4' },
   groq:      { name: 'Groq',       model: 'Llama, Mixtral (fast)',     hint: 'gsk_...', bg: '#F55036' },
+  nvidia:    { name: 'NVIDIA',     model: 'NIM (OpenAI-compatible)',   hint: 'nvapi-',  bg: '#76B900' },
 };
 
 export function ApiKeysSection() {
@@ -165,7 +166,8 @@ function EnvSection() {
         <EnvRow k="NEXTAUTH_SECRET"  v="••••••••••••••••••••"             />
         <EnvRow k="ENCRYPTION_KEY"   v="••••••••••••••••••••"             />
         <EnvRow k="OPENAI_API_KEY"   v="sk-proj-•••••••K9p2" linked        />
-        <EnvRow k="ANTHROPIC_API_KEY" v="not set" status="warn" last       />
+        <EnvRow k="ANTHROPIC_API_KEY" v="not set" status="warn"             />
+        <EnvRow k="NVIDIA_API_KEY"    v="nvapi-••••••••••••" linked last    />
       </Card>
       <div className="text-[11.5px] text-muted mt-2.5">
         Edit <code className="font-mono">.env</code> directly to change these. Restart required.

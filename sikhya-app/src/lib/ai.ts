@@ -2,7 +2,7 @@
  * AI provider abstraction. Resolves the user's active key, calls the provider,
  * returns a streaming text response.
  *
- * For brevity we implement OpenAI + Anthropic + Google Gemini + Groq with
+ * For brevity we implement OpenAI + Anthropic + Google Gemini + Groq + NVIDIA with
  * a unified interface. Each provider's adapter accepts { apiKey, messages, mode }
  * and returns a ReadableStream<Uint8Array> of plain UTF-8 text.
  */
@@ -49,6 +49,7 @@ export async function streamChat({ userId, messages, mode = 'simple' }: CallOpts
     case 'anthropic': return anthropicStream(key, fullMessages);
     case 'google':    return googleStream(key, fullMessages);
     case 'groq':      return groqStream(key, fullMessages);
+    case 'nvidia':    return nvidiaStream(key, fullMessages);
     default: throw new Error(`Unknown provider: ${apiKey.provider}`);
   }
 }
@@ -116,6 +117,22 @@ async function groqStream(apiKey: string, messages: ChatMessage[]): Promise<Read
     body: JSON.stringify({ model: 'llama-3.1-70b-versatile', messages, stream: true }),
   });
   if (!res.ok || !res.body) throw new Error(`Groq error: ${res.status}`);
+  return parseSSE(res.body, (chunk) => chunk.choices?.[0]?.delta?.content || '');
+}
+
+// ─── NVIDIA NIM (OpenAI-compatible) ───
+async function nvidiaStream(apiKey: string, messages: ChatMessage[]): Promise<ReadableStream<Uint8Array>> {
+  const res = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'meta/llama-3.1-70b-instruct',
+      messages,
+      stream: true,
+      temperature: 0.7,
+    }),
+  });
+  if (!res.ok || !res.body) throw new Error(`NVIDIA error: ${res.status}`);
   return parseSSE(res.body, (chunk) => chunk.choices?.[0]?.delta?.content || '');
 }
 
